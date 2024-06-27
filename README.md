@@ -51,8 +51,8 @@ MIT License
 
 [Iraku Harry](https://github.com/iraqooh/)
 
-[Akoldou Samuel]()
+[Akoldou Samuel](https://github.com/Akoldou)
 
-[Ngong Abraham Kon]()
+[Ngong Abraham Kon](https://github.com/Ngongkon)
 
-[Andrew ?]()
+[Andrew Efiti](https://github.com/1efitiAnndrew)
