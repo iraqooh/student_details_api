@@ -50,6 +50,9 @@ MIT License
 ### Authors
 
 [Iraku Harry](https://github.com/iraqooh/)
+
 [Akoldou Samuel]()
+
 [Ngong Abraham Kon]()
+
 [Andrew ?]()
