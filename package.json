@@ -1,0 +1,37 @@
+{
+  "name": "student_details_api",
+  "version": "1.0.0",
+  "description": "This API retrieves student analytics data from a MySQL database using Sequelize and Express. It provides endpoints to fetch total expected fees, total amount paid, total outstanding fees, total number of students, and percentage of paid vs expected fees. Additionally, it fetches the last few transactions of payments for a specified student ID.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iraqooh/student_details_api.git"
+  },
+  "keywords": [
+    "Student",
+    "Management",
+    "System",
+    "Analytics"
+  ],
+  "author": "H. Iraku, S. Akoldou, A. K. Ngong, Andrew",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iraqooh/student_details_api/issues"
+  },
+  "homepage": "https://github.com/iraqooh/student_details_api#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "joi": "^17.13.3",
+    "mysql2": "^3.10.1",
+    "sequelize": "^6.37.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
