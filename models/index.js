@@ -25,11 +25,25 @@ sequelize.authenticate().then(
     console.error("");
 });
 
-// connection object
-const db = {}
+// import models and create associations
+const Student = require('./student.model')(sequelize, Sequelize);
+const Finance = require('./finance.model')(sequelize, Sequelize);
+const Payment = require('./payment.model')(sequelize, Sequelize);
 
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
+Student.hasMany(Finance, { foreignKey: 'student_id' });
+Finance.belongsTo(Student, { foreignKey: 'student_id' });
+
+Student.hasMany(Payment, { foreignKey: 'student_id' });
+Payment.belongsTo(Student, { foreignKey: 'student_id' });
+
+// connection object
+const db = {
+    sequelize,
+    Sequelize,
+    Student,
+    Finance,
+    Payment
+}
 
 // module imports[, associations] and assignments here
 
