@@ -80,6 +80,9 @@ MIT License
 ### Authors
 
 [Iraku Harry](https://github.com/iraqooh/)
+
 [Akoldou Samuel](https://github.com/Akoldou)
+
 [Ngong Abraham Kon](https://github.com/Ngongkon)
+
 [Andrew Efiti](https://github.com/1efitiAnndrew)
