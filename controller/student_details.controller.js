@@ -98,7 +98,7 @@ exports.GetStudent = async (req, res) => {
             res.status(500).send({
                 status: "Error",
                 code: 500,
-                message: err.message || "Database read error"
+                message: err.message || "Database read operation error"
             })
         }
     } else {
