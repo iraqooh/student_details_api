@@ -6,6 +6,7 @@ function formatMoney(number) {
     return number.toLocaleString('en-US');
 }
 
+
 // API logic
 exports.GetStudent = async (req, res) => {
     if (req.method === 'GET') {
@@ -52,8 +53,7 @@ exports.GetStudent = async (req, res) => {
                 status: "OK",
                 code: 200,
                 data: {
-                    total_payments: formattedTotalPayments,
-                    // payments_per_student: formattedPaymentsPerStudent
+                    total_payments: formattedTotalPayments
                 }
             });
         } catch (err) {
