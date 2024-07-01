@@ -5,7 +5,7 @@ module.exports = app => {
 
     // endpoint
     router.get('/students', controller.GetStudent);
-
+    
     // base route
     app.use('/student_detail_api', router);
 }

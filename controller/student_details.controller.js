@@ -39,13 +39,8 @@ exports.GetStudent = async (req, res) => {
                 paymentsQuery.where = { student_id: student_id};
             }
 
-            // const paymentsPerStudent = await db.Payment.findAll(paymentsQuery);
-
-            // const formattedPaymentsPerStudent = paymentsPerStudent.map(payment => ({
-            //     student_id: payment.student_id,
-            //     total_paid: formatMoney(Number(payment.dataValues.total_paid))
-            // }));
-
+            const totalExpectedFees = await db.Finance.sum('fees');
+            const formattedTotalExpected = formatMoney(Number(totalExpectedFees));
             const totalPayments = await db.Payment.sum('amount_paid');
             const formattedTotalPayments = formatMoney(Number(totalPayments));
 
@@ -53,7 +48,8 @@ exports.GetStudent = async (req, res) => {
                 status: "OK",
                 code: 200,
                 data: {
-                    total_payments: formattedTotalPayments
+                    total_Expected_Fees:formattedTotalExpected,
+                    total_payments: formattedTotalPayments,
                 }
             });
         } catch (err) {
@@ -71,3 +67,8 @@ exports.GetStudent = async (req, res) => {
         });
     }
 }
+
+     }
+
+}
+
