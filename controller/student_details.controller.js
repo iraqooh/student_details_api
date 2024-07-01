@@ -11,7 +11,8 @@ exports.GetStudent = async (req, res) => {
     if (req.method === 'GET') {
         try {
             const schema = joi.object({
-                student_id: joi.number().integer().optional()
+                student_id: joi.number().integer().optional(),
+                last_transactions: joi.number().integer().optional()
             });
 
             const { error, value } = schema.validate(req.query);
@@ -24,8 +25,14 @@ exports.GetStudent = async (req, res) => {
                 })
             }
 
-            const { student_id } = value;
+            const { student_id, last_transactions } = value;
+            const transactionsCount = last_transactions || 5;
 
+            let financesQuery = {
+                attributes: [ 'fees' ],
+                where: { student_id: student_id }
+            };
+            
             let paymentsQuery = {
                 attributes: [
                     'student_id',
@@ -36,24 +43,55 @@ exports.GetStudent = async (req, res) => {
 
             if (student_id) {
                 paymentsQuery.where = { student_id: student_id};
+
+                var feesPerStudent = await db.Finance.findAll(financesQuery);
+                var paymentsPerStudent = await db.Payment.findAll(paymentsQuery);
+
+                var formattedPaymentsPerStudent = paymentsPerStudent.map(payment => ({
+                    student_id: payment.student_id,
+                    total_paid: Number(payment.dataValues.total_paid)
+                }));
             }
 
-            // const paymentsPerStudent = await db.Payment.findAll(paymentsQuery);
-
-            // const formattedPaymentsPerStudent = paymentsPerStudent.map(payment => ({
-            //     student_id: payment.student_id,
-            //     total_paid: formatMoney(Number(payment.dataValues.total_paid))
-            // }));
-
-            const totalPayments = await db.Payment.sum('amount_paid');
+            const totalPayments = student_id ? formattedPaymentsPerStudent[0].total_paid : await db.Payment.sum('amount_paid');
             const formattedTotalPayments = formatMoney(Number(totalPayments));
+
+            // Retrieve and format total expected fees from the Finance table
+            const totalExpectedFees = student_id ? Number(feesPerStudent[0].fees) : await db.Finance.sum('fees');
+            const formattedTotalExpectedFees = formatMoney(Number(totalExpectedFees));
+
+            // Retrieve the total number of students registered
+            const totalStudents = student_id ? 1 : await db.Student.count();
+
+            // Retrieve last x transactions
+            let lastTransactionsQuery = {
+                order: [['createdAt', 'DESC']],
+                limit: transactionsCount
+            };
+
+            if (student_id) {
+                lastTransactionsQuery.where = { student_id: student_id };
+            }
+
+            const lastTransactions = await db.Payment.findAll(lastTransactionsQuery);
+
+            const formattedLastTransactions = lastTransactions.map(transaction => ({
+                payment_id: transaction.payment_id,
+                student_id: transaction.student_id,
+                amount_paid: formatMoney(Number(transaction.amount_paid)),
+                createdAt: transaction.createdAt
+            }));
 
             res.send({
                 status: "OK",
                 code: 200,
                 data: {
+                    total_expected_fees: formattedTotalExpectedFees,
                     total_payments: formattedTotalPayments,
-                    // payments_per_student: formattedPaymentsPerStudent
+                    percentage_paid: `${Math.round(totalPayments * 100 / totalExpectedFees)}%`,
+                    outstanding_fees_payments: formatMoney(totalExpectedFees - totalPayments),
+                    number_of_students: totalStudents,
+                    last_x_transactions: formattedLastTransactions
                 }
             });
         } catch (err) {
