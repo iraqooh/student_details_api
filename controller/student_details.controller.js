@@ -27,8 +27,6 @@ exports.GetStudent = async (req, res) => {
 
             const { student_id, last_transactions } = value;
             const transactionsCount = last_transactions || 5;
-          
-//             const student_id_exists
 
             let financesQuery = {
                 attributes: [ 'fees' ],
@@ -44,6 +42,20 @@ exports.GetStudent = async (req, res) => {
             };
 
             if (student_id) {
+                // check if student with specified id exists
+                const student_id_exists = await db.Student.findByPk(student_id);
+
+                console.log(student_id_exists);
+                if (student_id_exists === null) {
+                    res.status(404).send({
+                        status: "Not Found",
+                        code: 404,
+                        message: "Student id not found or does not exist"
+                    });
+
+                    return;
+                }
+                
                 paymentsQuery.where = { student_id: student_id};
 
                 var feesPerStudent = await db.Finance.findAll(financesQuery);
@@ -58,10 +70,6 @@ exports.GetStudent = async (req, res) => {
             // Retrieve and format the sum of fees payments - Harry
             const totalPayments = student_id ? formattedPaymentsPerStudent[0].total_paid : await db.Payment.sum('amount_paid');
             const formattedTotalPayments = formatMoney(Number(totalPayments));
-            const totalOutstandingFees = totalExpectedFees - totalPayments;
-            const formattedTotalOutstandingFees = formatMoney(Number(totalOutstandingFees));
-
-            
 
             // Retrieve and format total expected fees from the Finance table - Kon Abraham
             const totalExpectedFees = student_id ? Number(feesPerStudent[0].fees) : await db.Finance.sum('fees');
