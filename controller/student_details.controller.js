@@ -39,9 +39,14 @@ exports.GetStudent = async (req, res) => {
             }
 
             const totalExpectedFees = await db.Finance.sum('fees');
+            const totalStudents = await db.Student.count();
             const formattedTotalExpected = formatMoney(Number(totalExpectedFees));
             const totalPayments = await db.Payment.sum('amount_paid');
             const formattedTotalPayments = formatMoney(Number(totalPayments));
+            const totalOutstandingFees = totalExpectedFees - totalPayments;
+            const formattedTotalOutstandingFees = formatMoney(Number(totalOutstandingFees));
+
+            
 
             res.send({
                 status: "OK",
@@ -49,6 +54,9 @@ exports.GetStudent = async (req, res) => {
                 data: {
                     total_Expected_Fees:formattedTotalExpected,
                     total_payments: formattedTotalPayments,
+                     total_outstanding_fees: formattedTotalOutstandingFees,
+                    number_of_students: totalStudents
+                   
                 }
             });
         } catch (err) {
@@ -66,8 +74,3 @@ exports.GetStudent = async (req, res) => {
         });
     }
 }
-
-     }
-
-}
-
