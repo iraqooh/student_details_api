@@ -2,7 +2,7 @@
 
 ### Overview
 
-This API retrieves student analytics data from a MySQL database using Sequelize and Express. It provides endpoints to fetch total expected fees, total amount paid, total outstanding fees, total number of students, and percentage of paid vs expected fees. Additionally, it fetches the last few transactions of payments for a specified student ID.
+This API retrieves student analytics data from a MySQL database using Sequelize and Express. It provides endpoints to fetch total expected fees, total amount paid, total outstanding fees, total number of students, and percentage of paid vs expected fees. Additionally, it fetches the last 5 transactions of payments. The number of transactions can be specified using the last_transactions query parameter. Consumers also have the option to specify the student ID to retrieve the mentioned parameters for the specified student.
 
 ### Features
 
@@ -16,6 +16,7 @@ This API retrieves student analytics data from a MySQL database using Sequelize 
 
 - `/school_api/students`: Retrieves student analytics data
     - Query parameter: `student_id` (integer)
+    - Query parameter: `last_transactions` (integer)
 
 ### Database Configuration
 
