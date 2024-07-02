@@ -71,7 +71,7 @@ This API retrieves student analytics data from a MySQL database using Sequelize 
       ```sh
       npm run start:populate
       ```
-5. Access the API at `http://localhost:3000/school_api/students`
+5. Access the API at `http://localhost:3000/student_detail_api/students`
 
 ### License
 
