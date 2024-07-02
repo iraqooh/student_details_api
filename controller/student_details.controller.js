@@ -45,7 +45,6 @@ exports.GetStudent = async (req, res) => {
                 // check if student with specified id exists
                 const student_id_exists = await db.Student.findByPk(student_id);
 
-                console.log(student_id_exists);
                 if (student_id_exists === null) {
                     res.status(404).send({
                         status: "Not Found",
