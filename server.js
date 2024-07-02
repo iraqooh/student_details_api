@@ -5,6 +5,7 @@ const bodyparser = require('body-parser');
 const db = require('./models/index');
 const populateData = require('./models/populate.data')
 
+
 // server instance
 const app = express();
 
@@ -21,6 +22,8 @@ db.sequelize.sync({ force: false })
     });
 
 require('./route/student_details.route')(app);
+
+
 
 const PORT = 3000;
 

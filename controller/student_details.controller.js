@@ -27,6 +27,8 @@ exports.GetStudent = async (req, res) => {
 
             const { student_id, last_transactions } = value;
             const transactionsCount = last_transactions || 5;
+          
+//             const student_id_exists
 
             let financesQuery = {
                 attributes: [ 'fees' ],
@@ -53,17 +55,22 @@ exports.GetStudent = async (req, res) => {
                 }));
             }
 
+            // Retrieve and format the sum of fees payments - Harry
             const totalPayments = student_id ? formattedPaymentsPerStudent[0].total_paid : await db.Payment.sum('amount_paid');
             const formattedTotalPayments = formatMoney(Number(totalPayments));
+            const totalOutstandingFees = totalExpectedFees - totalPayments;
+            const formattedTotalOutstandingFees = formatMoney(Number(totalOutstandingFees));
 
-            // Retrieve and format total expected fees from the Finance table
+            
+
+            // Retrieve and format total expected fees from the Finance table - Kon Abraham
             const totalExpectedFees = student_id ? Number(feesPerStudent[0].fees) : await db.Finance.sum('fees');
             const formattedTotalExpectedFees = formatMoney(Number(totalExpectedFees));
 
-            // Retrieve the total number of students registered
+            // Retrieve the total number of students registered - Andrew
             const totalStudents = student_id ? 1 : await db.Student.count();
 
-            // Retrieve last x transactions
+            // Retrieve last x transactions - Samuel
             let lastTransactionsQuery = {
                 order: [['createdAt', 'DESC']],
                 limit: transactionsCount
@@ -98,13 +105,13 @@ exports.GetStudent = async (req, res) => {
             res.status(500).send({
                 status: "Error",
                 code: 500,
-                message: err.message || "Database read operation error"
+                message: err.message || "Internal server error"
             })
         }
     } else {
         res.send({
             status: "Error",
-            code: 500,
+            code: 405,
             message: "Invalid request method"
         });
     }
