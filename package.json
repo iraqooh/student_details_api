@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon start",
-    "start:populate": "cross-env POPULATE_DATA=true nodemon server.js"
+    "start": "node start",
+    "start:populate": "cross-env POPULATE_DATA=true node server.js"
   },
   "repository": {
     "type": "git",

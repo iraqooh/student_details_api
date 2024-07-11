@@ -2,7 +2,7 @@
 
 ### Overview
 
-This API retrieves student analytics data from a MySQL database using Sequelize and Express. It provides endpoints to fetch total expected fees, total amount paid, total outstanding fees, total number of students, and percentage of paid vs expected fees. Additionally, it fetches the last few transactions of payments for a specified student ID.
+This API retrieves student analytics data from a MySQL database using Sequelize and Express. It provides endpoints to fetch total expected fees, total amount paid, total outstanding fees, total number of students, and percentage of paid vs expected fees. Additionally, it fetches the last 5 transactions of payments. The number of transactions can be specified using the last_transactions query parameter. Consumers also have the option to specify the student ID to retrieve the mentioned parameters for the specified student.
 
 ### Features
 
@@ -14,8 +14,9 @@ This API retrieves student analytics data from a MySQL database using Sequelize 
 
 ### Endpoints
 
-- `/school_api/students`: Retrieves student analytics data
+- `/student_detail_api/students`: Retrieves student financial analytics data
     - Query parameter: `student_id` (integer)
+    - Query parameter: `last_transactions` (integer)
 
 ### Database Configuration
 
@@ -59,19 +60,19 @@ This API retrieves student analytics data from a MySQL database using Sequelize 
 
 ### Installation
 
-1. Clone the repository
-2. Run `npm install` to install dependencies
-3. Create a MySQL database with the specified configuration
+1. Clone the repository and make it the current working directory: `cd student_details_api`.
+2. Run `npm install` to install the dependencies.
+3. Create a MySQL database with the specified configuration in the config/db.config.js file.
 4. Start the server:
+    - With populating data, run this command when starting the server for the first time. This will insert dummy data into the tables:
+      ```sh
+      npm run start:populate
+      ```
     - Without populating data:
       ```sh
       npm start
       ```
-    - With populating data:
-      ```sh
-      npm run start:populate
-      ```
-5. Access the API at `http://localhost:3000/school_api/students`
+5. Access the API at `http://localhost:3000/student_detail_api/students`
 
 ### License
 
